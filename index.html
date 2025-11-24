@@ -9,8 +9,24 @@
 <body>
     <h1>Projet Tron</h1>
 
-    <button id="touche" onclick="ouvrirPlus('modal')">Changer les touches</button>
+    <div class="score">
+        <div class="points">
+            <p id="pts1">0</p>
+            <p> - </p>
+            <p id="pts2">0</p>
+        </div>
+        <div class="noms">
+            <p id="nomJoueur1"></p>
+            <p id="nomJoueur2"></p> 
+        </div>
+    </div>
+
     <canvas id="canvas_dessin" width="800" height="590"></canvas>
+    <div class="btn-group">
+        <button id="commencer" class="btn" onclick="ouvrirPlus('choixJoueur')">Commencer</button>
+        <button id="touche" class="btn" onclick="ouvrirPlus('modal')">Changer les touches</button>
+    </div>
+
 
     <div id="modal" class="modal">
         <div class="modal-content">
@@ -20,6 +36,21 @@
             <p>Changer les touches</p>
             <h3>Joueur 2</h3>
             <p>Changer les touches</p>
+        </div>
+    </div>
+
+    <div id="choixJoueur" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fermerPlus('choixJoueur')">&times;</span>
+            <div class="input-nom">
+                <label for="joueur1">Nom du joueur 1 :</label>
+                <input id="joueur1" name="joueur1" type="text" />
+            </div>
+            <div class="input-nom">
+                <label for="joueur2">Nom du joueur 2 :</label>
+                <input id="joueur2" name="joueur2" type="text"/>
+            </div>
+            <button class="btn" onclick="init_Partie('choixJoueur')">Commencer la partie</button>
         </div>
     </div>
 <script src="asset/js/script.js"></script>
