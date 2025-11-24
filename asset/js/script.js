@@ -99,6 +99,7 @@ function move_Player1(canvas, latouche){
 
     ctx.fillRect(keyBindings_Player1.position.x, keyBindings_Player1.position.y, 10, 10)
 
+    /*
             switch(event.code){
                 case keyBindings_Player1.up:
                     newY += speed
@@ -134,6 +135,7 @@ function move_Player1(canvas, latouche){
             }
         }
     });
+    */
 
     verif_perdu_joueur1(newX, newY, perdu)
 
