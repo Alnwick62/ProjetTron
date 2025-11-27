@@ -18,6 +18,12 @@ var datas_Player2 = {
     direction: 'right',
     perdu: false,
 };
+const Set_Position_player1 = new Set();
+const Set_Position_player2 = new Set();
+var partieEnCours = false;
+var gameLoop = null;
+var touches_P1 = [];
+var touches_P2 = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas_dessin');
@@ -28,14 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function init_Partie(id){
     let nomJ1 = document.getElementById('nomJoueur1');
     let nomJ2 = document.getElementById('nomJoueur2');
-    let joueur1 = document.getElementById('joueur1')
-    let joueur2 = document.getElementById('joueur2')
+    let joueur1 = document.getElementById('joueur1');
+    let joueur2 = document.getElementById('joueur2');
 
-    nomJ1.textContent = joueur1.value
-    nomJ2.textContent = joueur2.value
+    nomJ1.textContent = joueur1.value;
+    nomJ2.textContent = joueur2.value;
 
-    fermerPlus(id)
-    commencer_Partie()
+    fermerPlus(id);
+    commencer_Partie();
 }
 
 function DrawGrid(canvas){
@@ -79,8 +85,9 @@ function ClearGrid(canvas){
     datas_Player2.direction = 'right'
     datas_Player2.perdu = false
 
-    Set_Position_player1 = new Set();
-    Set_Position_player2 = new Set();
+    Set_Position_player1.clear();
+    Set_Position_player2.clear()
+
     touches_P1 = [];
     touches_P2 = [];
 
@@ -92,32 +99,38 @@ function ClearGrid(canvas){
 
 function commencer_Partie(){
     const canvas = document.getElementById('canvas_dessin');
-    const Set_Position_player1 = new Set();
-    var touches_P1 = []
-    var touches_P2 = []
+
+    if(gameLoop !== null){
+        clearInterval(gameLoop);
+    }
+
+    partieEnCours = true;
+    Set_Position_player1.clear();
+    Set_Position_player2.clear();
+    touches_P1 = [];
+    touches_P2 = [];
 
     document.addEventListener('keydown', function(e){
         if(Object.values(datas_Player1).includes(e.code)){
-            touches_P1.push(e.code)
+            touches_P1.push(e.code);
         }
 
         if(Object.values(datas_Player2).includes(e.code)){
-            touches_P2.push(e.code)
+            touches_P2.push(e.code);
         }
-    })
+    });
 
-    const gameLoop = setInterval(function(){
+    gameLoop = setInterval(function(){
         if(datas_Player1.perdu === true){
             clearInterval(gameLoop);
+            partieEncours = false;
             return;
         }
-
-        move_Player1(canvas, Set_Position_player1, touches_P1.shift());
-
+        move_Player1(canvas, touches_P1.shift());
     }, 100);
 }
 
-function move_Player1(canvas, Set_Position_player1, latouche){
+function move_Player1(canvas, latouche){
     const ctx = canvas.getContext('2d');
 
     ctx.fillStyle = "orange"
@@ -126,7 +139,7 @@ function move_Player1(canvas, Set_Position_player1, latouche){
 
     changeDirection(datas_Player1, latouche)
     dessin_cercle(datas_Player1, ctx)
-    verif_perdu_joueur1(Set_Position_player1, canvas)
+    verif_perdu_joueur1(canvas)
 
 }
 
@@ -200,29 +213,44 @@ function dessin_cercle(keyBindings, ctx){
     ctx.closePath()
 }
 
-function verif_perdu_joueur1(Set_Position_player1, canvas){
+function verif_perdu_joueur1(canvas){
     const ctx = canvas.getContext('2d');
-    if(!Set_Position_player1.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`)){
-        dessin_cercle(datas_Player1, ctx);            
-        Set_Position_player1.add(`${datas_Player1.position.x}, ${datas_Player1.position.y}`)
-    }else{
-        datas_Player1.perdu = true
+    
+    if(datas_Player1.perdu) 
+        if(!partieEnCours) return;
+
+    if(Set_Position_player1.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`) ||
+        datas_Player1.position.x > 800 ||
+        datas_Player1.position.y > 590 ||
+        datas_Player1.position.x < 0 ||
+        datas_Player1.position.y < 0
+    ){
+        datas_Player1.perdu = true;
     }
 
-    if(datas_Player1.position.x > 800 || datas_Player1.position.y > 590 || datas_Player1.position.x < 0 || datas_Player1.position.y < 0){
-        datas_Player1.perdu = true
-    }
     if(datas_Player1.perdu){
-        alert("Joueur 1 a perdu !");
-        let pts2 = document.getElementById('pts2');
-        pts2.textContent = parseInt(pts2.textContent) + 1;
-        ClearGrid(canvas);
-        commencer_Partie();
+        finDeManche(canvas);
+        return;
     }
+    Set_Position_player1.add(`${datas_Player1.position.x}, ${datas_Player1.position.y}`);
+}  
+
+function finDeManche(canvas){
+    if(!partieEnCours) return;
+
+    partieEnCours = false;
+
+    clearInterval(gameLoop);
+
+    alert("Joueur 1 a perdu !");
+    let pts2 = document.getElementById('pts2');
+    pts2.textContent = parseInt(pts2.textContent) + 1;
+
+    ClearGrid(canvas);
+    commencer_Partie();
 }
 
-
-
+//Mondal
 function ouvrirPlus(id) {
     document.getElementById(id).style.display = "flex";
     document.getElementById('joueur1').focus();
