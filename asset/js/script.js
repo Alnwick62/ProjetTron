@@ -133,14 +133,26 @@ function commencer_Partie(){
 function move_Player1(canvas, latouche){
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = "orange"
-    ctx.fillRect(datas_Player1.position.x, datas_Player1.position.y, 10, 10)
+    ctx.fillStyle = "orange";
+    ctx.fillRect(datas_Player1.position.x, datas_Player1.position.y, 10, 10);
     Set_Position_player1.add(`${datas_Player1.position.x}, ${datas_Player1.position.y}`);
 
-    changeDirection(datas_Player1, latouche)
-    dessin_cercle(datas_Player1, ctx)
-    verif_perdu_joueur1(canvas)
+    changeDirection(latouche);
+    dessin_cercle(ctx);
+    verif_perdu_joueur1(canvas);
 
+}
+
+function move_Player2(canvas, latouche){
+    const stx = canvas.getContext('2d');
+
+    ctx.fillStyle = "blue";
+    ctx.fillRect(datas_Player2.position.x, datas_Player2.position.y, 10, 10);
+    Set_Position_player2.add(`${datas_Player2.position.x}, ${datas_Player2.position.y}`)
+
+    changeDirection(latouche);
+    dessin_cercle(ctx);
+    verif_perdu_joueur2(canvas);
 }
 
 function changeDirection(keyBindings, latouche){
