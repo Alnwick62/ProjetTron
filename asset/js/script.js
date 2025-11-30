@@ -137,12 +137,13 @@ function move_Player1(canvas, latouche){
     ctx.fillRect(datas_Player1.position.x, datas_Player1.position.y, 10, 10);
     Set_Position_player1.add(`${datas_Player1.position.x}, ${datas_Player1.position.y}`);
 
-    changeDirection(latouche);
-    dessin_cercle(ctx);
+    changeDirection(datas_Player1, latouche);
+    dessin_cercle(datas_Player1, ctx);
     verif_perdu_joueur1(canvas);
 
 }
 
+/*
 function move_Player2(canvas, latouche){
     const stx = canvas.getContext('2d');
 
@@ -154,7 +155,7 @@ function move_Player2(canvas, latouche){
     dessin_cercle(ctx);
     verif_perdu_joueur2(canvas);
 }
-
+*/
 function changeDirection(keyBindings, latouche){
     var speed = 10
     let { x, y} = keyBindings.position
