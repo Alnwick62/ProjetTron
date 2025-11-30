@@ -263,6 +263,64 @@ function finDeManche(canvas){
     commencer_Partie();
 }
 
+document.addEventListener('keydown', function(e){
+    let key = e.key.toUpperCase();
+    if(datas_Player1.up === key || datas_Player1.down === key || datas_Player1.left === key || datas_Player1.right === key || datas_Player1.jump === key){
+        touches_P1.push(key);
+    }
+    if(datas_Player2.up === key || datas_Player2.down === key || datas_Player2.left === key || datas_Player2.right === key || datas_Player2.jump === key){
+        touches_P2.push(key);
+    }
+});
+
+function estToucheLibre(joueur, touche, action) {
+    touche = touche.toUpperCase();
+    var j1 = datas_Player1;
+    var j2 = datas_Player2;
+    var joueurActuel;
+    var autreJoueur;
+    if (joueur === "p1") {
+        joueurActuel = j1;
+        autreJoueur = j2;
+    } else {
+        joueurActuel = j2;
+        autreJoueur = j1;
+    }
+    for (var key in joueurActuel) {
+        if (key === "up" || key === "down" || key === "left" || key === "right" || key === "jump") {
+            if (key !== action && joueurActuel[key] === touche) {
+                alert("Cette touche est déjà utilisée par ce joueur !");
+                return false;
+            }
+        }
+    }
+    for (var key in autreJoueur) {
+        if (key === "up" || key === "down" || key === "left" || key === "right" || key === "jump") {
+            if (autreJoueur[key] === touche) {
+                alert("Cette touche est déjà utilisée par l'autre joueur !");
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+function changerTouche(joueur, action) {
+    var nouvelleTouche = prompt("Appuie sur la nouvelle touche pour " + action);
+    if (!nouvelleTouche) return;
+    if (estToucheLibre(joueur, nouvelleTouche, action) === false) return;
+    var touche = nouvelleTouche.toUpperCase();
+    if (joueur === "p1") {
+        datas_Player1[action] = touche;
+        document.getElementById("j1_" + action).textContent = touche;
+    } else {
+        datas_Player2[action] = touche;
+        document.getElementById("j2_" + action).textContent = touche;
+    }
+
+    alert("Touche changée ! Maintenant tu joues avec " + touche);
+}
 //Mondal
 function ouvrirPlus(id) {
     document.getElementById(id).style.display = "flex";

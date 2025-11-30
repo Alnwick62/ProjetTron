@@ -23,20 +23,55 @@
     </div>
 
     <canvas id="canvas_dessin" width="800" height="590"></canvas>
+
     <div class="btn-group">
         <button id="commencer" class="btn" onclick="ouvrirPlus('choixJoueur')">Commencer</button>
         <button id="touche" class="btn" onclick="ouvrirPlus('modal')">Changer les touches</button>
+        <button id="regles" class="btn" onclick="ouvrirPlus('modalRegles')">Règles du jeu</button>
     </div>
-
 
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="fermerPlus('modal')">&times;</span>
             <h2>Touches</h2>
-            <h3>Joueur 1</h3>
-            <p>Changer les touches</p>
-            <h3>Joueur 2</h3>
-            <p>Changer les touches</p>
+
+            <div class="joueurs">
+                <div class="joueur">
+                    <h3>Joueur 1</h3>
+                    <p>Monter : <span id="j1_up">Z</span></p> 
+                    <button class="btn" onclick="changerTouche('p1','up')">Changer</button>
+
+                    <p>Gauche : <span id="j1_left">Q</span></p> 
+                    <button class="btn" onclick="changerTouche('p1','left')">Changer</button>
+
+                    <p>Droite : <span id="j1_right">D</span></p> 
+                    <button class="btn" onclick="changerTouche('p1','right')">Changer</button>
+
+                    <p>Descendre : <span id="j1_down">W</span></p> 
+                    <button class="btn" onclick="changerTouche('p1','down')">Changer</button>
+
+                    <p>Sauter : <span id="j1_jump">A</span></p> 
+                    <button class="btn" onclick="changerTouche('p1','jump')">Changer</button>
+                </div>
+
+                <div class="joueur">
+                    <h3>Joueur 2</h3>
+                    <p>Monter : <span id="j2_up">M</span></p> 
+                    <button class="btn" onclick="changerTouche('p2','up')">Changer</button>
+
+                    <p>Gauche : <span id="j2_left">O</span></p> 
+                    <button class="btn" onclick="changerTouche('p2','left')">Changer</button>
+
+                    <p>Droite : <span id="j2_right">Comma</span></p> 
+                    <button class="btn" onclick="changerTouche('p2','right')">Changer</button>
+
+                    <p>Descendre : <span id="j2_down">K</span></p> 
+                    <button class="btn" onclick="changerTouche('p2','down')">Changer</button>
+
+                    <p>Sauter : <span id="j2_jump">I</span></p> 
+                    <button class="btn" onclick="changerTouche('p2','jump')">Changer</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -54,6 +89,18 @@
             <button class="btn" onclick="init_Partie('choixJoueur')">Commencer la partie</button>
         </div>
     </div>
-<script src="asset/js/script.js"></script>
+
+    <div id="modalRegles" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fermerPlus('modalRegles')">&times;</span>
+            <h2>Règles du jeu</h2>
+            <p>- Chaque joueur contrôle une moto</p>
+            <p>- Si une moto touche un mur ou une trainée (même la sienne), c'est perdu.</p>
+            <p>- Le premier à gagner 3 parties l'emporte.</p>
+            <p>- Les motos peuvent sauter au dessus des trainées.</p>
+        </div>
+    </div>
+
+    <script src="asset/js/script.js"></script>
 </body>
 </html>
