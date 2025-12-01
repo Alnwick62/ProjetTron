@@ -1,19 +1,20 @@
 var datas_Player1 = {
-    up: "KeyZ",
-    down: "KeyW",
-    right: "KeyD",
-    left: "KeyA",
-    jump: "Space",
+    up: "Z",
+    down: "S",
+    right: "D",
+    left: "Q",
+    jump: " ",
     position: {x: 1, y:280},
     direction: 'right',
     perdu: false,
 };
+
 var datas_Player2 = {
-    up: "KeyM",
-    down: "KeyK",
-    left: "KeyO",
-    right: "Comma",
-    jump: "Space",
+    up: "M",
+    down: "K",
+    right: ",",
+    left: "O",
+    jump: " ",
     position: {x: 1, y:300},
     direction: 'right',
     perdu: false,
@@ -111,12 +112,12 @@ function commencer_Partie(){
     touches_P2 = [];
 
     document.addEventListener('keydown', function(e){
-        if(Object.values(datas_Player1).includes(e.code)){
-            touches_P1.push(e.code);
+        const key = e.key.toUpperCase(); 
+        if([datas_Player1.up, datas_Player1.down, datas_Player1.left, datas_Player1.right, datas_Player1.jump].includes(key)){
+            touches_P1.push(key);
         }
-
-        if(Object.values(datas_Player2).includes(e.code)){
-            touches_P2.push(e.code);
+        if([datas_Player2.up, datas_Player2.down, datas_Player2.left, datas_Player2.right, datas_Player2.jump].includes(key)){
+            touches_P2.push(key);
         }
     });
 
@@ -256,7 +257,7 @@ function finDeManche(canvas){
 }
 
 document.addEventListener('keydown', function(e){
-    const key = e.key.toUpperCase(); // utilise la valeur du clavier
+    const key = e.key.toUpperCase(); 
     if([datas_Player1.up, datas_Player1.down, datas_Player1.left, datas_Player1.right, datas_Player1.jump].includes(key)){
         touches_P1.push(key);
     }
@@ -269,28 +270,21 @@ function estToucheLibre(joueur, touche, action) {
     touche = touche.toUpperCase();
     var j1 = datas_Player1;
     var j2 = datas_Player2;
-    var joueurActuel;
-    var autreJoueur;
-    if (joueur === "p1") {
-        joueurActuel = j1;
-        autreJoueur = j2;
-    } else {
-        joueurActuel = j2;
-        autreJoueur = j1;
-    }
+    var joueurActuel = joueur === "p1" ? j1 : j2;
+    var autreJoueur = joueur === "p1" ? j2 : j1;
+
     for (var key in joueurActuel) {
-        if (key === "up" || key === "down" || key === "left" || key === "right" || key === "jump") {
-            if (key !== action && joueurActuel[key] === touche) {
-                alert("Cette touche est déjà utilisée par ce joueur !");
-                return false;
+        if (["up","down","left","right","jump"].includes(key) && key !== action) {
+            if (joueurActuel[key] === touche) {
+                return false; 
             }
         }
     }
+
     for (var key in autreJoueur) {
-        if (key === "up" || key === "down" || key === "left" || key === "right" || key === "jump") {
+        if (["up","down","left","right","jump"].includes(key)) {
             if (autreJoueur[key] === touche) {
-                alert("Cette touche est déjà utilisée par l'autre joueur !");
-                return false;
+                return false; 
             }
         }
     }
@@ -303,10 +297,11 @@ function changerTouche(joueur, action) {
     if (!nouvelleTouche){
         return;
     } 
-    if (estToucheLibre(joueur, nouvelleTouche, action) === false){
+    var touche = nouvelleTouche.substring(0, 1).toUpperCase();
+    if (!estToucheLibre(joueur, touche, action)) {
+        alert("Cette touche est déjà assignée ! Choisis-en une autre.");
         return;
-    } 
-     var touche = nouvelleTouche.substring(0, 1).toUpperCase();
+    }
     if (joueur === "p1") {
         datas_Player1[action] = touche;
         document.getElementById("j1_" + action).textContent = touche;
@@ -317,6 +312,8 @@ function changerTouche(joueur, action) {
 
     alert("Touche changée ! Maintenant tu joues avec " + touche);
 }
+
+
 //Mondal
 function ouvrirPlus(id) {
     document.getElementById(id).style.display = "flex";
