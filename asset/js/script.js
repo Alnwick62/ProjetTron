@@ -314,21 +314,22 @@ function changerTouche(joueur, action) {
 }
 
 
-//Mondal
+//Modal
 function ouvrirPlus(id) {
-    document.getElementById(id).style.display = "flex";
-    document.getElementById('joueur1').focus();
+    const dlg = document.getElementById(id);
+    if (dlg) {
+        dlg.showModal(); 
+        const input = dlg.querySelector('input');
+        if (input){
+            input.focus(); 
+        }  
+    }
 }
 
 function fermerPlus(id) {
-    document.getElementById(id).style.display = "none";
+    const dlg = document.getElementById(id);
+    if (dlg && dlg.open) {
+        dlg.close(); 
+    }
 }
 
-window.onclick = function(event) {
-    let modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-};
