@@ -126,7 +126,14 @@ function commencer_Partie(){
             partieEncours = false;
             return;
         }
+        if(datas_Player2.perdu === true){
+            clearInterval(gameLoop);
+            partieEnCours = false;
+            return;
+        }
+
         move_Player1(canvas, touches_P1.shift());
+        move_Player2(canvas, touches_P2.shift())
     }, 100);
 }
 
@@ -143,19 +150,18 @@ function move_Player1(canvas, latouche){
 
 }
 
-/*
 function move_Player2(canvas, latouche){
-    const stx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "white";
     ctx.fillRect(datas_Player2.position.x, datas_Player2.position.y, 10, 10);
     Set_Position_player2.add(`${datas_Player2.position.x}, ${datas_Player2.position.y}`)
 
-    changeDirection(latouche);
-    dessin_cercle(ctx);
+    changeDirection(datas_Player2, latouche);
+    dessin_cercle(datas_Player2, ctx);
     verif_perdu_joueur2(canvas);
 }
-*/
+
 function changeDirection(keyBindings, latouche){
     var speed = 10
     let { x, y} = keyBindings.position
@@ -164,7 +170,7 @@ function changeDirection(keyBindings, latouche){
     if(latouche){
         switch(latouche){
             case keyBindings.up:
-                direction = 'top'
+                direction = 'up'
                 break;
             case keyBindings.down:
                 direction = 'down'
@@ -175,11 +181,26 @@ function changeDirection(keyBindings, latouche){
             case keyBindings.right:
                 direction = 'right'
                 break;
+            case keyBindings.jump:
+                switch(direction){
+                    case 'up':
+                        y += speed
+                        break;
+                    case 'down':
+                        y -= speed
+                        break;
+                    case 'left':
+                        x -= speed
+                        break;
+                    case 'right':
+                        x += speed
+                        break;
+                }
         }
     }
 
     switch(direction){
-        case 'top':
+        case 'up':
             y += speed
             break;
         case 'down':
@@ -201,7 +222,7 @@ function changeDirection(keyBindings, latouche){
 function dessin_cercle(keyBindings, ctx){
     ctx.beginPath()
     switch(keyBindings.direction){
-        case 'top':
+        case 'up':
             cx = keyBindings.position.x + 5
             cy = keyBindings.position.y
             ctx.arc(cx, cy, 5, Math.PI, 0, true);
@@ -229,8 +250,10 @@ function dessin_cercle(keyBindings, ctx){
 function verif_perdu_joueur1(canvas){
     const ctx = canvas.getContext('2d');
     
-    if(datas_Player1.perdu) 
-        if(!partieEnCours) return;
+    if(datas_Player1.perdu){
+        if(!partieEnCours) { return; }
+    }
+        
 
     if(Set_Position_player1.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`) ||
         datas_Player1.position.x > 800 ||
@@ -240,6 +263,9 @@ function verif_perdu_joueur1(canvas){
     ){
         datas_Player1.perdu = true;
     }
+    if(Set_Position_player2.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`)){
+        datas_Player1.perdu = true
+    }
 
     if(datas_Player1.perdu){
         finDeManche(canvas);
@@ -248,6 +274,31 @@ function verif_perdu_joueur1(canvas){
     Set_Position_player1.add(`${datas_Player1.position.x}, ${datas_Player1.position.y}`);
 }  
 
+function verif_perdu_joueur2(canvas){
+    const ctx = canvas.getContext('2d');
+
+    if(datas_Player2.perdu)
+        if(!partieEnCours) return ;
+
+    if(Set_Position_player2.has(`${datas_Player2.position.x}, ${datas_Player2.position.y}`) || 
+        datas_Player2.position.x > 800 ||
+        datas_Player2.position.y > 590 ||
+        datas_Player2.position.x < 0 ||
+        datas_Player2.position.y < 0
+    ){
+        datas_Player2.perdu = true;
+    }
+    if(Set_Position_player1.has(`${datas_Player2.position.x}, ${datas_Player2.position.y}`)){
+        datas_Player2.perdu = true
+    }
+
+    if(datas_Player2.perdu){
+        finDeManche(canvas);
+        return;
+    }
+    Set_Position_player2.add(`${datas_Player2.position.x}, ${datas_Player2.position.y}`);
+}
+
 function finDeManche(canvas){
     if(!partieEnCours) return;
 
@@ -255,14 +306,21 @@ function finDeManche(canvas){
 
     clearInterval(gameLoop);
 
-    alert("Joueur 1 a perdu !");
-    let pts2 = document.getElementById('pts2');
-    pts2.textContent = parseInt(pts2.textContent) + 1;
+    if(datas_Player1.perdu){
+        alert("Joueur 1 a perdu !");
+        let pts2 = document.getElementById('pts2');
+        pts2.textContent = parseInt(pts2.textContent) + 1;
+    }else{
+        alert("Joueur 2 a perdu !");
+        let pts1 = document.getElementById('pts1');
+        pts1.textContent = parseInt(pts1.textContent) + 1;
+    }
 
     ClearGrid(canvas);
     commencer_Partie();
 }
 
+//Touches
 document.addEventListener('keydown', function(e){
     let key = e.key.toUpperCase();
     if(datas_Player1.up === key || datas_Player1.down === key || datas_Player1.left === key || datas_Player1.right === key || datas_Player1.jump === key){
@@ -321,6 +379,7 @@ function changerTouche(joueur, action) {
 
     alert("Touche changée ! Maintenant tu joues avec " + touche);
 }
+
 //Mondal
 function ouvrirPlus(id) {
     document.getElementById(id).style.display = "flex";
