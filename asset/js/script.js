@@ -377,9 +377,13 @@ function estToucheLibre(joueur, touche, action) {
 
 function changerTouche(joueur, action) {
     var nouvelleTouche = prompt("Appuie sur la nouvelle touche pour " + action);
-    if (!nouvelleTouche) return;
-    if (estToucheLibre(joueur, nouvelleTouche, action) === false) return;
-    var touche = nouvelleTouche.toUpperCase();
+    if (!nouvelleTouche){
+        return;
+    } 
+    if (estToucheLibre(joueur, nouvelleTouche, action) === false){
+        return;
+    } 
+     var touche = nouvelleTouche.substring(0, 1).toUpperCase();
     if (joueur === "p1") {
         datas_Player1[action] = touche;
         document.getElementById("j1_" + action).textContent = touche;
