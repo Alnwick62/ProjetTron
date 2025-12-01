@@ -156,46 +156,38 @@ function move_Player2(canvas, latouche){
     verif_perdu_joueur2(canvas);
 }
 */
-function changeDirection(keyBindings, latouche){
-    var speed = 10
-    let { x, y} = keyBindings.position
-    let direction = keyBindings.direction
+function changeDirection(player, keyPressed){
+    var speed = 10;
+    let { x, y } = player.position;
+    let direction = player.direction;
 
-    if(latouche){
-        switch(latouche){
-            case keyBindings.up:
-                direction = 'top'
+    if(keyPressed){
+        switch(keyPressed){
+            case player.up:
+                direction = 'top';
                 break;
-            case keyBindings.down:
-                direction = 'down'
+            case player.down:
+                direction = 'down';
                 break;
-            case keyBindings.left:
-                direction = 'left'
+            case player.left:
+                direction = 'left';
                 break;
-            case keyBindings.right:
-                direction = 'right'
+            case player.right:
+                direction = 'right';
                 break;
         }
     }
 
     switch(direction){
-        case 'top':
-            y += speed
-            break;
-        case 'down':
-            y -= speed
-            break;
-        case 'left':
-            x -= speed
-            break;
-        case 'right':
-            x += speed
-            break;
+        case 'top': y -= speed; break;
+        case 'down': y += speed; break;
+        case 'left': x -= speed; break;
+        case 'right': x += speed; break;
     }
 
-    keyBindings.position.x = x
-    keyBindings.position.y = y
-    keyBindings.direction = direction
+    player.position.x = x;
+    player.position.y = y;
+    player.direction = direction;
 }
 
 function dessin_cercle(keyBindings, ctx){
@@ -264,11 +256,11 @@ function finDeManche(canvas){
 }
 
 document.addEventListener('keydown', function(e){
-    let key = e.key.toUpperCase();
-    if(datas_Player1.up === key || datas_Player1.down === key || datas_Player1.left === key || datas_Player1.right === key || datas_Player1.jump === key){
+    const key = e.key.toUpperCase(); // utilise la valeur du clavier
+    if([datas_Player1.up, datas_Player1.down, datas_Player1.left, datas_Player1.right, datas_Player1.jump].includes(key)){
         touches_P1.push(key);
     }
-    if(datas_Player2.up === key || datas_Player2.down === key || datas_Player2.left === key || datas_Player2.right === key || datas_Player2.jump === key){
+    if([datas_Player2.up, datas_Player2.down, datas_Player2.left, datas_Player2.right, datas_Player2.jump].includes(key)){
         touches_P2.push(key);
     }
 });
