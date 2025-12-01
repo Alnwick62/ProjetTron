@@ -1,3 +1,4 @@
+//Variable globales
 var datas_Player1 = {
     up: "KeyZ",
     down: "KeyW",
@@ -25,6 +26,7 @@ var gameLoop = null;
 var touches_P1 = [];
 var touches_P2 = [];
 
+//Partie
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas_dessin');
     DrawGrid(canvas);
@@ -111,6 +113,7 @@ function commencer_Partie(){
     touches_P2 = [];
 
     document.addEventListener('keydown', function(e){
+        console.log(e.code);
         if(Object.values(datas_Player1).includes(e.code)){
             touches_P1.push(e.code);
         }
@@ -300,20 +303,31 @@ function verif_perdu_joueur2(canvas){
 }
 
 function finDeManche(canvas){
-    if(!partieEnCours) return;
+    let pts1 = document.getElementById('pts1');
+    let pts2 = document.getElementById('pts2');
+    
+    if(!partieEnCours) { return; }
 
     partieEnCours = false;
 
     clearInterval(gameLoop);
 
     if(datas_Player1.perdu){
-        alert("Joueur 1 a perdu !");
-        let pts2 = document.getElementById('pts2');
+        alert("Joueur 1 a perdu la manche !");
         pts2.textContent = parseInt(pts2.textContent) + 1;
     }else{
-        alert("Joueur 2 a perdu !");
-        let pts1 = document.getElementById('pts1');
+        alert("Joueur 2 a perdu la manche !");
         pts1.textContent = parseInt(pts1.textContent) + 1;
+    }
+
+    if(pts1.textContent == 3){
+        alert("Le joueur 1 à gagner la partie !!!");
+        pts1.textContent = 0;
+        pts2.textContent = 0;
+    }else if(pts2.textContent == 3){
+        alert("Le joueur 2 a gagné la partie !!!");
+        pts1.textContent = 0;
+        pts2.textContent = 0;       
     }
 
     ClearGrid(canvas);
