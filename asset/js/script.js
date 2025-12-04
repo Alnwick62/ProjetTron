@@ -1,20 +1,20 @@
 //Variable globales
 var datas_Player1 = {
-    up: "KeyZ",
-    down: "KeyW",
-    right: "KeyD",
-    left: "KeyA",
-    jump: "Space",
+    up: "Z",
+    down: "W",
+    right: "D",
+    left: "Q",
+    jump: " ",
     position: {x: 1, y:280},
     direction: 'right',
     perdu: false,
 };
 var datas_Player2 = {
-    up: "KeyM",
-    down: "KeyK",
-    left: "KeyO",
-    right: "Comma",
-    jump: "Space",
+    up: "M",
+    down: "K",
+    left: "O",
+    right: ",",
+    jump: " ",
     position: {x: 1, y:300},
     direction: 'right',
     perdu: false,
@@ -78,24 +78,23 @@ function ClearGrid(canvas){
 
     DrawGrid(canvas);
 
-    datas_Player1.position = {x: 1, y:280}
-    datas_Player1.direction = 'right'
-    datas_Player1.perdu = false
+    datas_Player1.position = {x: 1, y:280};
+    datas_Player1.direction = 'right';
+    datas_Player1.perdu = false;
 
-    datas_Player2.position = {x: 1, y:300}
-    datas_Player2.direction = 'right'
-    datas_Player2.perdu = false
-
-    Set_Position_player1.clear();
-    Set_Position_player2.clear()
-
-    touches_P1 = [];
-    touches_P2 = [];
+    datas_Player2.position = {x: 1, y:300};
+    datas_Player2.direction = 'right';
+    datas_Player2.perdu = false;
 
     const initialCtx = canvas.getContext('2d');
+
     initialCtx.fillStyle = "orange";
     initialCtx.fillRect(datas_Player1.position.x, datas_Player1.position.y, 10, 10);
     dessin_cercle(datas_Player1, initialCtx);
+
+    initialCtx.fillStyle = "white";
+    initialCtx.fillRect(datas_Player2.position.x, datas_Player2.position.y, 10, 10);
+    dessin_cercle(datas_Player2, initialCtx);
 }
 
 function commencer_Partie(){
@@ -113,12 +112,12 @@ function commencer_Partie(){
 
     document.addEventListener('keydown', function(e){
         console.log(e.key);
-        if(Object.values(datas_Player1).includes(e.key)){
-            touches_P1.push(e.key);
+        if(Object.values(datas_Player1).includes(e.key.toUpperCase())){
+            touches_P1.push(e.key.toUpperCase());
         }
 
-        if(Object.values(datas_Player2).includes(e.key)){
-            touches_P2.push(e.key);
+        if(Object.values(datas_Player2).includes(e.key.toUpperCase())){
+            touches_P2.push(e.key.toUpperCase());
         }
     });
 
@@ -136,7 +135,7 @@ function commencer_Partie(){
 
         move_Player1(canvas, touches_P1.shift());
         move_Player2(canvas, touches_P2.shift())
-    }, 100);
+    }, 50);
 }
 
 function move_Player1(canvas, latouche){
@@ -201,10 +200,10 @@ function changeDirection(keyBindings, latouche){
     }
     switch(direction){
         case 'up':
-            y += speed
+            y -= speed
             break;
         case 'down':
-            y -= speed
+            y += speed
             break;
         case 'left':
             x -= speed
@@ -220,41 +219,38 @@ function changeDirection(keyBindings, latouche){
 }
 
 function dessin_cercle(keyBindings, ctx){
-    ctx.beginPath()
+    ctx.beginPath();
     switch(keyBindings.direction){
-        case 'top':
-            cx = keyBindings.position.x + 5
-            cy = keyBindings.position.y + 10
-            ctx.arc(cx, cy, 5, Math.PI, 0, true);
+        case 'up':
+            cx = keyBindings.position.x + 5;
+            cy = keyBindings.position.y + 10;
+            ctx.arc(cx, cy, 5, Math.PI, 0 );
             break;
         case 'down':
-            cx = keyBindings.position.x + 5
-            cy = keyBindings.position.y
-            ctx.arc(cx, cy, 5, 0, Math.PI, true); 
+            cx = keyBindings.position.x + 5;
+            cy = keyBindings.position.y;
+            ctx.arc(cx, cy, 5, 0, Math.PI); 
             break;
         case 'left':
-            cx = keyBindings.position.x + 10
-            cy = keyBindings.position.y + 5             
-            ctx.arc(cx, cy, 5, Math.PI/2, 3*Math.PI/2, false);
+            cx = keyBindings.position.x + 10;
+            cy = keyBindings.position.y + 5;          
+            ctx.arc(cx, cy, 5, Math.PI/2, 3*Math.PI/2);
             break;
         case 'right':
-            cx = keyBindings.position.x
-            cy = keyBindings.position.y + 5               
+            cx = keyBindings.position.x;
+            cy = keyBindings.position.y + 5;           
             ctx.arc(cx, cy, 5, 3*Math.PI/2, Math.PI/2);
             break;
     }
     ctx.fill();
-    ctx.closePath()
+    ctx.closePath();
 }
 
 function verif_perdu_joueur1(canvas){
-    const ctx = canvas.getContext('2d');
-    
     if(datas_Player1.perdu){
         if(!partieEnCours) { return; }
     }
         
-
     if(Set_Position_player1.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`) ||
         datas_Player1.position.x > 800 ||
         datas_Player1.position.y > 590 ||
@@ -264,7 +260,7 @@ function verif_perdu_joueur1(canvas){
         datas_Player1.perdu = true;
     }
     if(Set_Position_player2.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`)){
-        datas_Player1.perdu = true
+        datas_Player1.perdu = true;
     }
 
     if(datas_Player1.perdu){
@@ -275,8 +271,6 @@ function verif_perdu_joueur1(canvas){
 }   
 
 function verif_perdu_joueur2(canvas){
-    const ctx = canvas.getContext('2d');
-
     if(datas_Player2.perdu)
         if(!partieEnCours) return ;
 
@@ -289,7 +283,7 @@ function verif_perdu_joueur2(canvas){
         datas_Player2.perdu = true;
     }
     if(Set_Position_player1.has(`${datas_Player2.position.x}, ${datas_Player2.position.y}`)){
-        datas_Player2.perdu = true
+        datas_Player2.perdu = true;
     }
 
     if(datas_Player2.perdu){
@@ -312,23 +306,26 @@ function finDeManche(canvas){
     if(datas_Player1.perdu){
         alert("Joueur 1 a perdu la manche !");
         pts2.textContent = parseInt(pts2.textContent) + 1;
+        ClearGrid(canvas);
+        commencer_Partie();
     }else{
         alert("Joueur 2 a perdu la manche !");
         pts1.textContent = parseInt(pts1.textContent) + 1;
+        ClearGrid(canvas);
+        commencer_Partie();
     }
 
     if(pts1.textContent == 3){
         alert("Le joueur 1 à gagner la partie !!!");
         pts1.textContent = 0;
         pts2.textContent = 0;
+        ClearGrid(canvas);
     }else if(pts2.textContent == 3){
         alert("Le joueur 2 a gagné la partie !!!");
         pts1.textContent = 0;
-        pts2.textContent = 0;       
+        pts2.textContent = 0;
+        ClearGrid(canvas);   
     }
-
-    ClearGrid(canvas);
-    commencer_Partie();
 }
 
 //Touches
