@@ -252,7 +252,9 @@ function dessin_cercle(keyBindings, ctx){
 
 function verif_perdu_joueur1(canvas){
     if(datas_Player1.perdu){
-        if(!partieEnCours) { return; }
+        if(!partieEnCours) { 
+            return; 
+        }
     }
         
     if(Set_Position_player1.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`) ||
@@ -276,7 +278,9 @@ function verif_perdu_joueur1(canvas){
 
 function verif_perdu_joueur2(canvas){
     if(datas_Player2.perdu)
-        if(!partieEnCours) return ;
+        if(!partieEnCours) {
+            return ;
+        }
 
     if(Set_Position_player2.has(`${datas_Player2.position.x}, ${datas_Player2.position.y}`) || 
         datas_Player2.position.x > 800 ||
