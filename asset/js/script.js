@@ -139,7 +139,7 @@ function commencer_Partie(){
 
         move_Player1(canvas, touches_P1.shift());
         move_Player2(canvas, touches_P2.shift())
-    }, 50);
+    }, 100);
 }
 
 function move_Player1(canvas, latouche){
@@ -347,8 +347,17 @@ function estToucheLibre(joueur, touche, action) {
     touche = touche.toUpperCase();
     var j1 = datas_Player1;
     var j2 = datas_Player2;
-    var joueurActuel = joueur === "p1" ? j1 : j2;
-    var autreJoueur = joueur === "p1" ? j2 : j1;
+    var joueurActuel;
+    var autreJoueur;
+
+    if (joueur === "p1") {
+        joueurActuel = j1;
+        autreJoueur = j2;
+    } else {
+        joueurActuel = j2;
+        autreJoueur = j1;
+    }
+
 
     for (var key in joueurActuel) {
         if (["up","down","left","right","jump"].includes(key) && key !== action) {
