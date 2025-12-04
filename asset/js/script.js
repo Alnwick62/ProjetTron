@@ -9,6 +9,7 @@ var datas_Player1 = {
     direction: 'right',
     perdu: false,
 };
+
 var datas_Player2 = {
     up: "M",
     down: "K",
@@ -181,10 +182,28 @@ function move_Player2(canvas, latouche){
     return false;
 }
 
+function directionOpposee(directionOppos) {
+    switch(directionOppos){
+        case "up":
+            return "down";
+        case "down":  
+            return "up";
+        case "left":  
+            return "right";
+        case "right": 
+            return "left";
+    }
+}
+
 function changeDirection(keyBindings, latouche){
-    var speed = 10
-    let { x, y} = keyBindings.position
-    let direction = keyBindings.direction
+    var speed = 10;
+    let { x, y } = keyBindings.position;
+    let direction = keyBindings.direction;
+    let opDirection = directionOpposee(direction);
+    
+    if (latouche === keyBindings[opDirection]) {
+        latouche = null;
+    }
 
     if(latouche){
         switch(latouche){
@@ -267,7 +286,9 @@ function dessin_cercle(keyBindings, ctx){
 
 function verif_perdu_joueur1(){
     if(datas_Player1.perdu){
-        if(!partieEnCours) { return; }
+        if(!partieEnCours) { 
+            return; 
+        }
     }
         
     if(Set_Position_player1.has(`${datas_Player1.position.x}, ${datas_Player1.position.y}`) ||
@@ -351,6 +372,7 @@ function estToucheLibre(joueur, touche, action) {
     var j2 = datas_Player2;
     var joueurActuel;
     var autreJoueur;
+
     if (joueur === "p1") {
         joueurActuel = j1;
         autreJoueur = j2;
@@ -358,19 +380,20 @@ function estToucheLibre(joueur, touche, action) {
         joueurActuel = j2;
         autreJoueur = j1;
     }
+
+
     for (var key in joueurActuel) {
-        if (key === "up" || key === "down" || key === "left" || key === "right" || key === "jump") {
-            if (key !== action && joueurActuel[key] === touche) {
-                alert("Cette touche est déjà utilisée par ce joueur !");
-                return false;
+        if (["up","down","left","right","jump"].includes(key) && key !== action) {
+            if (joueurActuel[key] === touche) {
+                return false; 
             }
         }
     }
+
     for (var key in autreJoueur) {
-        if (key === "up" || key === "down" || key === "left" || key === "right" || key === "jump") {
+        if (["up","down","left","right","jump"].includes(key)) {
             if (autreJoueur[key] === touche) {
-                alert("Cette touche est déjà utilisée par l'autre joueur !");
-                return false;
+                return false; 
             }
         }
     }
@@ -398,21 +421,22 @@ function changerTouche(joueur, action) {
     alert("Touche changée ! Maintenant tu joues avec " + touche);
 }
 
-//Mondal
+//Modal
 function ouvrirPlus(id) {
-    document.getElementById(id).style.display = "flex";
-    document.getElementById('joueur1').focus();
+    const dlg = document.getElementById(id);
+    if (dlg) {
+        dlg.showModal(); 
+        const input = dlg.querySelector('input');
+        if (input){
+            input.focus(); 
+        }  
+    }
 }
 
 function fermerPlus(id) {
-    document.getElementById(id).style.display = "none";
+    const dlg = document.getElementById(id);
+    if (dlg && dlg.open) {
+        dlg.close(); 
+    }
 }
 
-window.onclick = function(event) {
-    let modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-};
