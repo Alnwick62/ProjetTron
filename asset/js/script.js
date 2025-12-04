@@ -145,7 +145,9 @@ function commencer_Partie(){
 }
 
 function move_Player1(canvas, latouche){
-    if(datas_Player1.perdu) { return false }
+    if(datas_Player1.perdu) { 
+        return false 
+    }
     
     const ctx = canvas.getContext('2d');
 
@@ -156,7 +158,9 @@ function move_Player1(canvas, latouche){
     changeDirection(datas_Player1, latouche);
 
     verif_perdu_joueur1();
-    if(datas_Player1.perdu) { return true; }
+    if(datas_Player1.perdu) { 
+        return true; 
+    }
 
     dessin_cercle(datas_Player1, ctx);
 
@@ -164,7 +168,9 @@ function move_Player1(canvas, latouche){
 }
 
 function move_Player2(canvas, latouche){
-    if(datas_Player2.perdu) { return false;}
+    if(datas_Player2.perdu) { 
+        return false;
+    }
     
     const ctx = canvas.getContext('2d');
 
@@ -175,7 +181,9 @@ function move_Player2(canvas, latouche){
     changeDirection(datas_Player2, latouche);
 
     verif_perdu_joueur2();
-    if(datas_Player2.perdu) { return true; }
+    if(datas_Player2.perdu) { 
+        return true; 
+    }
 
     dessin_cercle(datas_Player2, ctx);
 
@@ -305,7 +313,11 @@ function verif_perdu_joueur1(){
 }   
 
 function verif_perdu_joueur2(){
-    if(datas_Player2.perdu) { if(!partieEnCours) { return; } }
+    if(datas_Player2.perdu) { 
+        if(!partieEnCours) { 
+            return; 
+        } 
+    }
 
     if(Set_Position_player2.has(`${datas_Player2.position.x}, ${datas_Player2.position.y}`) || 
         datas_Player2.position.x > 800 ||
