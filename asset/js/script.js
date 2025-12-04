@@ -166,10 +166,28 @@ function move_Player2(canvas, latouche){
     verif_perdu_joueur2(canvas);
 }
 
+function directionOpposee(directionOppos) {
+    switch(directionOppos){
+        case "up":
+            return "down";
+        case "down":  
+            return "up";
+        case "left":  
+            return "right";
+        case "right": 
+            return "left";
+    }
+}
+
 function changeDirection(keyBindings, latouche){
-    var speed = 10
-    let { x, y} = keyBindings.position
-    let direction = keyBindings.direction
+    var speed = 10;
+    let { x, y } = keyBindings.position;
+    let direction = keyBindings.direction;
+    let opDirection = directionOpposee(direction);
+    
+    if (latouche === keyBindings[opDirection]) {
+        latouche = null;
+    }
 
     if(latouche){
         switch(latouche){
