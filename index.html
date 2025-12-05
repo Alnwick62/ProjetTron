@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet Tron</title>
     <link rel="stylesheet" href="asset/styles/style.css">
-    <link rel="icon" type="image/png" href="asset/img/Tron.png"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap">
+    <link rel="icon" type="image/png" href="asset/img/Tron.png">
 </head>
 <body>
     <h1>Projet Tron</h1>
@@ -25,11 +26,12 @@
     <canvas id="canvas_dessin" width="800" height="590"></canvas>
 
     <div class="btn-group">
-        <button id="commencer" class="btn" onclick="document.getElementById('choixJoueur').showModal()">Commencer</button>
+        <button id="commencer" class="btn" onclick="verifNomJoueur()">Commencer</button>
         <button id="touche" class="btn" onclick="document.getElementById('modal').showModal()">Changer les touches</button>
         <button id="regles" class="btn" onclick="document.getElementById('modalRegles').showModal()">Règles du jeu</button>
     </div>
 
+    <!--Modal Choix Touches -->
     <dialog id="modal">
         <h2>Touches</h2>
         <div class="joueurs">
@@ -47,7 +49,7 @@
                 <p>Descendre : <span id="j1_down">S</span></p> 
                 <button class="btn" onclick="changerTouche('p1','down')">Changer</button>
 
-                <p>Sauter : <span id="j1_jump"> </span></p> 
+                <p>Sauter : <span id="j1_jump">A</span></p> 
                 <button class="btn" onclick="changerTouche('p1','jump')">Changer</button>
             </div>
 
@@ -76,13 +78,13 @@
     <dialog id="choixJoueur">
         <div class="input-nom">
             <label for="joueur1">Nom du joueur 1 :</label>
-            <input id="joueur1" name="joueur1" type="text" />
+            <input id="joueur1" name="joueur1" type="text">
         </div>
         <div class="input-nom">
             <label for="joueur2">Nom du joueur 2 :</label>
-            <input id="joueur2" name="joueur2" type="text"/>
+            <input id="joueur2" name="joueur2" type="text">
         </div>
-        <button class="btn" onclick="init_Partie('choixJoueur'); document.getElementById('choixJoueur').close()">Commencer la partie</button>
+        <button class="btn" onclick="nomJoueur('choixJoueur'); document.getElementById('choixJoueur').close()">Commencer la partie</button>
         <button class="btn" onclick="document.getElementById('choixJoueur').close()">Fermer</button>
     </dialog>
 

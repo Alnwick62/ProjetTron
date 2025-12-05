@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
-html{
+html, button{
     font-family: "Orbitron", sans-serif;
     background-color: rgb(20, 20, 20);
 }
@@ -46,7 +44,7 @@ h1 {
 }
 
 #nomJoueur2{
-    color: blue
+    color: white
 }
 
 #canvas_dessin {
@@ -58,7 +56,6 @@ h1 {
 }
 
 .btn-group{
-    flex: flex;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -9,7 +9,6 @@ var datas_Player1 = {
     direction: 'right',
     perdu: false,
 };
-
 var datas_Player2 = {
     up: "M",
     down: "K",
@@ -30,7 +29,7 @@ var touches_P2 = [];
 //Partie
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas_dessin');
-    DrawGrid(canvas);
+    dessineGrid(canvas);
 
     document.addEventListener('keydown', function(e){
         const key = e.key.toUpperCase();
@@ -43,7 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function init_Partie(id){
+function verifNomJoueur(){
+    let nomJ1 = document.getElementById('nomJoueur1');
+    let nomJ2 = document.getElementById('nomJoueur2');
+
+    if(nomJ1.textContent === "" && nomJ2.textContent === ""){
+        document.getElementById('choixJoueur').showModal();
+    }else{
+        commencer_Partie();
+    }
+}
+
+function nomJoueur(id){
     let nomJ1 = document.getElementById('nomJoueur1');
     let nomJ2 = document.getElementById('nomJoueur2');
     let joueur1 = document.getElementById('joueur1');
@@ -52,26 +62,24 @@ function init_Partie(id){
     if(nomJ1.textContent === "" && nomJ2.textContent === ""){
         nomJ1.textContent = joueur1.value;
         nomJ2.textContent = joueur2.value;
-        fermerPlus(id);
-        commencer_Partie();
-    }else{
-        fermerPlus(id);
-        commencer_Partie();
     }
+        
+    fermerPlus(id);
+    commencer_Partie();
 }
 
-function DrawGrid(canvas){
+function dessineGrid(canvas){
     const ctx = canvas.getContext('2d');
 
-    const pointSize = 10
+    const taille_carre = 10;
     const width = canvas.width;
     const height = canvas.height;
 
     ctx.strokeStyle = "black";
-    ctx.lineWidth = 1
+    ctx.lineWidth = 1;
 
     //Pour les lignes verticales
-    for(let x = 0; x <= width; x += pointSize){
+    for(let x = 0; x <= width; x += taille_carre){
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
@@ -79,7 +87,7 @@ function DrawGrid(canvas){
     }
 
     //Pour les lignes horizontales
-    for(let y = 0; y <= height; y += pointSize){
+    for(let y = 0; y <= height; y += taille_carre){
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
@@ -87,11 +95,11 @@ function DrawGrid(canvas){
     }
 }
 
-function ClearGrid(canvas){
+function resetGrid(canvas){
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    DrawGrid(canvas);
+    dessineGrid(canvas);
 
     datas_Player1.position = {x: 10, y:280};
     datas_Player1.direction = 'right';
@@ -126,7 +134,7 @@ function commencer_Partie(){
             return;
         }
 
-        const j1Dead = move_Player1(canvas, touches_P1.shift());
+        const j1Dead = movePlayer1(canvas, touches_P1.shift());
         if (j1Dead || datas_Player1.perdu) {
             clearInterval(gameLoop);
             partieEnCours = false;
@@ -134,7 +142,7 @@ function commencer_Partie(){
             return;
         }
 
-         const j2Dead = move_Player2(canvas, touches_P2.shift());
+         const j2Dead = movePlayer2(canvas, touches_P2.shift());
         if (j2Dead || datas_Player2.perdu) {
             clearInterval(gameLoop);
             partieEnCours = false;
@@ -144,9 +152,9 @@ function commencer_Partie(){
     }, 100);
 }
 
-function move_Player1(canvas, latouche){
+function movePlayer1(canvas, latouche){
     if(datas_Player1.perdu) { 
-        return false 
+        return false;
     }
     
     const ctx = canvas.getContext('2d');
@@ -167,7 +175,7 @@ function move_Player1(canvas, latouche){
     return false;
 }
 
-function move_Player2(canvas, latouche){
+function movePlayer2(canvas, latouche){
     if(datas_Player2.perdu) { 
         return false;
     }
@@ -176,7 +184,7 @@ function move_Player2(canvas, latouche){
 
     ctx.fillStyle = "white";
     ctx.fillRect(datas_Player2.position.x, datas_Player2.position.y, 10, 10);
-    Set_Position_player2.add(`${datas_Player2.position.x}, ${datas_Player2.position.y}`)
+    Set_Position_player2.add(`${datas_Player2.position.x}, ${datas_Player2.position.y}`);
 
     changeDirection(datas_Player2, latouche);
 
@@ -216,55 +224,58 @@ function changeDirection(keyBindings, latouche){
     if(latouche){
         switch(latouche){
             case keyBindings.up:
-                direction = 'up'
+                direction = 'up';
                 break;
             case keyBindings.down:
-                direction = 'down'
+                direction = 'down';
                 break;
             case keyBindings.left:
-                direction = 'left'
+                direction = 'left';
                 break;
             case keyBindings.right:
-                direction = 'right'
+                direction = 'right';
                 break;
             case keyBindings.jump:
                 switch(direction){
                     case 'up':
-                        y -= speed
+                        y -= speed;
                         break;
                     case 'down':
-                        y += speed
+                        y += speed;
                         break;
                     case 'left':
-                        x -= speed
+                        x -= speed;
                         break;
                     case 'right':
-                        x += speed
+                        x += speed;
                         break;
                 }
         }
     }
+
     switch(direction){
         case 'up':
-            y -= speed
+            y -= speed;
             break;
         case 'down':
-            y += speed
+            y += speed;
             break;
         case 'left':
-            x -= speed
+            x -= speed;
             break;
         case 'right':
-            x += speed
+            x += speed;
             break;
     }
 
-    keyBindings.position.x = x
-    keyBindings.position.y = y
-    keyBindings.direction = direction
+    keyBindings.position.x = x;
+    keyBindings.position.y = y;
+    keyBindings.direction = direction;
 }
 
 function dessin_cercle(keyBindings, ctx){
+    let cx = 0;
+    let cy = 0;
     ctx.beginPath();
     switch(keyBindings.direction){
         case 'up':
@@ -339,7 +350,9 @@ function finDeManche(canvas){
     partieEnCours = false;
     clearInterval(gameLoop);
 
-    if(datas_Player1.perdu){
+    if(datas_Player1.perdu && datas_Player2.perdu){
+        alert("Egalité");
+    }else if(datas_Player1.perdu){
         alert("Joueur 2 a gagné la manche !");
         pts2.textContent = parseInt(pts2.textContent) + 1;
     }else{
@@ -352,7 +365,8 @@ function finDeManche(canvas){
         return;
     }
 
-    ClearGrid(canvas);
+    resetGrid
+(canvas);
     partieEnCours = true;
     commencer_Partie();
 }
@@ -364,7 +378,7 @@ function finDePartie(canvas){
     clearInterval(gameLoop);
     partieEnCours = false;
 
-    if(parseInt(pts1.textContent) === 3) {
+    if(parseInt(pts1.textContent) === 3){
         alert("Le joueur 1 a gagné la partie !");
     }else{
         alert("Le joueur 2 a gagné la partie !");
@@ -373,7 +387,8 @@ function finDePartie(canvas){
     pts1.textContent = 0;
     pts2.textContent = 0;
 
-    ClearGrid(canvas);
+    resetGrid
+(canvas);
     document.getElementById('commencer').disabled = false;
 }
 
@@ -394,17 +409,17 @@ function estToucheLibre(joueur, touche, action) {
     }
 
 
-    for (var key in joueurActuel) {
-        if (["up","down","left","right","jump"].includes(key) && key !== action) {
-            if (joueurActuel[key] === touche) {
+    for (var key1 in joueurActuel) {
+        if (["up","down","left","right","jump"].includes(key1) && key1 !== action) {
+            if (joueurActuel[key1] === touche) {
                 return false; 
             }
         }
     }
 
-    for (var key in autreJoueur) {
-        if (["up","down","left","right","jump"].includes(key)) {
-            if (autreJoueur[key] === touche) {
+    for (var key2 in autreJoueur) {
+        if (["up","down","left","right","jump"].includes(key2)) {
+            if (autreJoueur[key2] === touche) {
                 return false; 
             }
         }
