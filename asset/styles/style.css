@@ -24,11 +24,11 @@ h1 {
 }
 
 #pts1{
-    color: orange;
+    color: blue;
 }
 
 #pts2{
-    color: white;
+    color: red;
 }
 
 .noms{
@@ -40,11 +40,11 @@ h1 {
 }
 
 #nomJoueur1{
-    color: orange
+    color: blue
 }
 
 #nomJoueur2{
-    color: white
+    color: red
 }
 
 #canvas_dessin {

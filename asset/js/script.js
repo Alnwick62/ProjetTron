@@ -159,7 +159,7 @@ function movePlayer1(canvas, latouche){
     
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "blue";
     ctx.fillRect(datas_Player1.position.x, datas_Player1.position.y, 10, 10);
     Set_Position_player1.add(`${datas_Player1.position.x}, ${datas_Player1.position.y}`);
 
@@ -182,7 +182,7 @@ function movePlayer2(canvas, latouche){
     
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "red";
     ctx.fillRect(datas_Player2.position.x, datas_Player2.position.y, 10, 10);
     Set_Position_player2.add(`${datas_Player2.position.x}, ${datas_Player2.position.y}`);
 
