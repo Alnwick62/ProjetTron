@@ -59,10 +59,15 @@ function nomJoueur(id){
     let joueur1 = document.getElementById('joueur1');
     let joueur2 = document.getElementById('joueur2');
 
-    if(nomJ1.textContent === "" && nomJ2.textContent === ""){
-        nomJ1.textContent = joueur1.value;
-        nomJ2.textContent = joueur2.value;
-    }
+if (joueur1.value.trim() === "" || joueur2.value.trim() === "") {
+    alert("Merci d'entrer un pseudo pour les deux joueurs !");
+    return;
+}
+
+if (nomJ1.textContent === "" && nomJ2.textContent === "") {
+    nomJ1.textContent = joueur1.value.trim();
+    nomJ2.textContent = joueur2.value.trim();
+}
         
     fermerPlus(id);
     commencer_Partie();
